@@ -1,9 +1,9 @@
 package server
 
 import (
-	v1 "link-service/api/helloworld/v1"
-	"link-service/internal/conf"
-	"link-service/internal/service"
+	v1 "link_service/api/helloworld/v1"
+	"link_service/internal/conf"
+	"link_service/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/grpc"

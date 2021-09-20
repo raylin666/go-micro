@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	v1 "link-service/api/helloworld/v1"
-	"link-service/internal/biz"
+	v1 "link_service/api/helloworld/v1"
+	"link_service/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 )
 

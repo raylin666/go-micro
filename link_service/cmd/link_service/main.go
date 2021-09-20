@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"link-service/internal/conf"
+	"link_service/internal/conf"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"

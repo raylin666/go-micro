@@ -1,4 +1,4 @@
-module link-service
+module link_service
 
 go 1.15
 

@@ -1,7 +1,7 @@
 package data
 
 import (
-	"link-service/internal/conf"
+	"link_service/internal/conf"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 )

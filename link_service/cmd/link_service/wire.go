@@ -5,11 +5,11 @@
 package main
 
 import (
-	"link-service/internal/biz"
-	"link-service/internal/conf"
-	"link-service/internal/data"
-	"link-service/internal/server"
-	"link-service/internal/service"
+	"link_service/internal/biz"
+	"link_service/internal/conf"
+	"link_service/internal/data"
+	"link_service/internal/server"
+	"link_service/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
