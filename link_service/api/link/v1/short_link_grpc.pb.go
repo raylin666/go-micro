@@ -31,7 +31,7 @@ func NewShortLinkClient(cc grpc.ClientConnInterface) ShortLinkClient {
 
 func (c *shortLinkClient) GenerateShortLink(ctx context.Context, in *GenerateShortLinkRequest, opts ...grpc.CallOption) (*GenerateShortLinkReply, error) {
 	out := new(GenerateShortLinkReply)
-	err := c.cc.Invoke(ctx, "/api.link.v1.Short_link/GenerateShortLink", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.link.v1.ShortLink/GenerateShortLink", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func _ShortLink_GenerateShortLink_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.link.v1.Short_link/GenerateShortLink",
+		FullMethod: "/api.link.v1.ShortLink/GenerateShortLink",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShortLinkServer).GenerateShortLink(ctx, req.(*GenerateShortLinkRequest))
@@ -88,7 +88,7 @@ func _ShortLink_GenerateShortLink_Handler(srv interface{}, ctx context.Context, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ShortLink_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.link.v1.Short_link",
+	ServiceName: "api.link.v1.ShortLink",
 	HandlerType: (*ShortLinkServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

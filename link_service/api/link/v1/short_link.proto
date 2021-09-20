@@ -9,10 +9,11 @@ option java_multiple_files = true;
 option java_package = "api.link.v1";
 option java_outer_classname = "LinkProtoV1";
 
-service Short_link {
+service ShortLink {
 	rpc GenerateShortLink (GenerateShortLinkRequest) returns (GenerateShortLinkReply) {
 		option (google.api.http) = {
-			get: "/link/short/generate"
+			post: "/link/short/generate"
+			body: "url"
 		};
 	};
 }

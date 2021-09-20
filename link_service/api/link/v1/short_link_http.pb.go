@@ -23,16 +23,16 @@ type ShortLinkHTTPServer interface {
 
 func RegisterShortLinkHTTPServer(s *http.Server, srv ShortLinkHTTPServer) {
 	r := s.Route("/")
-	r.GET("/link/short/generate", _ShortLink_GenerateShortLink0_HTTP_Handler(srv))
+	r.POST("/link/short/generate", _ShortLink_GenerateShortLink0_HTTP_Handler(srv))
 }
 
 func _ShortLink_GenerateShortLink0_HTTP_Handler(srv ShortLinkHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GenerateShortLinkRequest
-		if err := ctx.BindQuery(&in); err != nil {
+		if err := ctx.Bind(&in.Url); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/api.link.v1.Short_link/GenerateShortLink")
+		http.SetOperation(ctx, "/api.link.v1.ShortLink/GenerateShortLink")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GenerateShortLink(ctx, req.(*GenerateShortLinkRequest))
 		})
@@ -60,10 +60,10 @@ func NewShortLinkHTTPClient(client *http.Client) ShortLinkHTTPClient {
 func (c *ShortLinkHTTPClientImpl) GenerateShortLink(ctx context.Context, in *GenerateShortLinkRequest, opts ...http.CallOption) (*GenerateShortLinkReply, error) {
 	var out GenerateShortLinkReply
 	pattern := "/link/short/generate"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/api.link.v1.Short_link/GenerateShortLink"))
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/api.link.v1.ShortLink/GenerateShortLink"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in.Url, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
