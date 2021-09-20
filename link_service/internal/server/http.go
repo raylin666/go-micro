@@ -1,16 +1,16 @@
 package server
 
 import (
-	v1 "link_service/api/helloworld/v1"
-	"link_service/internal/conf"
-	"link_service/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	v1 "link_service/api/link/v1"
+	"link_service/internal/conf"
+	"link_service/internal/service"
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.ShortLinkService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -26,6 +26,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+	v1.RegisterShortLinkHTTPServer(srv, greeter)
 	return srv
 }
