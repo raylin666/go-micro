@@ -4,6 +4,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/go-kratos/swagger-api/openapiv2"
 	v1 "link_service/api/link/v1"
 	"link_service/internal/conf"
 	"link_service/internal/service"
@@ -26,6 +27,11 @@ func NewHTTPServer(c *conf.Server, greeter *service.ShortLinkService, logger log
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
+
+	// swagger api router	   ---     /q/swagger-ui/
+	openAPIHandler := openapiv2.NewHandler()
+	srv.HandlePrefix("/q/", openAPIHandler)
+
 	v1.RegisterShortLinkHTTPServer(srv, greeter)
 	return srv
 }

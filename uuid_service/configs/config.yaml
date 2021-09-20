@@ -1,3 +1,7 @@
+service:
+  id: uuid_1
+  name: micro.uuid.service
+  version: v1.0
 server:
   http:
     addr: 0.0.0.0:20001

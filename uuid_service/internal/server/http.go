@@ -7,6 +7,7 @@ import (
 	v1 "uuid_service/api/uuid/v1"
 	"uuid_service/internal/conf"
 	"uuid_service/internal/service"
+	"github.com/go-kratos/swagger-api/openapiv2"
 )
 
 // NewHTTPServer new a HTTP server.
@@ -26,6 +27,11 @@ func NewHTTPServer(c *conf.Server, greeter *service.UuidService, logger log.Logg
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
+
+	// swagger api router     ---     /q/swagger-ui/
+	openAPIHandler := openapiv2.NewHandler()
+	srv.HandlePrefix("/q/", openAPIHandler)
+
 	v1.RegisterUuidHTTPServer(srv, greeter)
 	return srv
 }

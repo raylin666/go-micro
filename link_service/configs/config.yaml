@@ -1,3 +1,7 @@
+service:
+  id: link_1
+  name: micro.link.service
+  version: v1.0
 server:
   http:
     addr: 0.0.0.0:20000

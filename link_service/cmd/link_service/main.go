@@ -11,6 +11,9 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+
+	consul "github.com/go-kratos/consul/registry"
+	"github.com/hashicorp/consul/api"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -30,6 +33,11 @@ func init() {
 }
 
 func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
+	client, err := api.NewClient(api.DefaultConfig())
+	if err != nil {
+		panic(err)
+	}
+
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -40,20 +48,13 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 			hs,
 			gs,
 		),
+		kratos.Registrar(consul.New(client)),
 	)
 }
 
 func main() {
 	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
-		"trace_id", log.TraceID(),
-		"span_id", log.SpanID(),
-	)
+
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
@@ -67,6 +68,22 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
+
+	if sid, err := c.Value("service.id").String(); err == nil {
+		id = sid
+	}
+	Name, _ = c.Value("service.name").String()
+	Version, _ = c.Value("service.version").String()
+
+	logger := log.With(log.NewStdLogger(os.Stdout),
+		"ts", log.DefaultTimestamp,
+		"caller", log.DefaultCaller,
+		"service.id", id,
+		"service.name", Name,
+		"service.version", Version,
+		"trace_id", log.TraceID(),
+		"span_id", log.SpanID(),
+	)
 
 	app, cleanup, err := initApp(bc.Server, bc.Data, logger)
 	if err != nil {
