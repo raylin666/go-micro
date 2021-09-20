@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package api.uuid.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "uuid_service/api/uuid/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.uuid.v1";
+option java_outer_classname = "UuidProtoV1";
+
+service Uuid {
+	rpc GenerateUuid (GenerateUuidRequest) returns (GenerateUuidReply) {
+			option (google.api.http) = {
+				post: "/uuid/generate"
+				body: "*"
+			};
+	};
+}
+
+message GenerateUuidRequest {
+	/**
+		default: 随机UUID
+		time_rand: 时间随机值
+	 */
+	string type = 1;
+}
+
+message GenerateUuidReply {
+	string value = 1;
+}
