@@ -20,5 +20,11 @@ func NewUuidService(uc *biz.UuidUsecase, logger log.Logger) *UuidService {
 }
 
 func (s *UuidService) GenerateUuid(ctx context.Context, req *pb.GenerateUuidRequest) (*pb.GenerateUuidReply, error) {
-	return &pb.GenerateUuidReply{}, nil
+	value, err := s.uc.GenerateUuid(ctx, &biz.Uuid{
+		GenerateUuid: req,
+	})
+
+	return &pb.GenerateUuidReply{
+		Value: value,
+	}, err
 }

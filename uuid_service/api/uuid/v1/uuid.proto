@@ -13,14 +13,19 @@ service Uuid {
 	rpc GenerateUuid (GenerateUuidRequest) returns (GenerateUuidReply) {
 			option (google.api.http) = {
 				post: "/uuid/generate"
+				body: "*"
 			};
 	};
 }
 
 message GenerateUuidRequest {
-
+	/**
+		default: 随机UUID
+		time_rand: 时间随机值
+	 */
+	string type = 1;
 }
 
 message GenerateUuidReply {
-	int64 value = 1;
+	string value = 1;
 }
