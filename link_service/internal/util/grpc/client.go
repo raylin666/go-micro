@@ -56,15 +56,15 @@ func (g *grpcClientConn) getClient(serverId string) *grpc.ClientConn {
 	return g.clientConn[serverId]
 }
 
-func GRPCClientConn() *grpcClientConn {
-	return instanceGrpcClientConn
-}
-
 /**
 	获取生成唯一标识服务
  */
 func (g *grpcClientConn) GetUuidClient() uuid.UuidClient {
 	return g.uuidClient
+}
+
+func GRPCClientConn() *grpcClientConn {
+	return instanceGrpcClientConn
 }
 
 /**

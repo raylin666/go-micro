@@ -6,11 +6,17 @@ import (
 	pb_link "github.com/raylin666/go-micro-protoc/link/v1"
 	uuid "github.com/raylin666/go-micro-protoc/uuid/v1"
 	"link_service/internal/constant"
+	"link_service/internal/util/binary"
 	"link_service/internal/util/grpc"
+	"strconv"
 )
 
 type ShortLink struct {
 	GenerateShortLink *pb_link.GenerateShortLinkRequest
+
+	Ident   int
+	Value   string
+	LongUrl string
 }
 
 type ShortLinkRepo interface {
@@ -25,13 +31,11 @@ type ShortLinkUsecase struct {
 func NewShortLinkUsecase(repo ShortLinkRepo, logger log.Logger) *ShortLinkUsecase {
 	return &ShortLinkUsecase{
 		repo: repo,
-		log: log.NewHelper(logger),
+		log:  log.NewHelper(logger),
 	}
 }
 
 func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink) (string, error) {
-	// binaryTransform := binary.NewBinaryTransform()
-
 	generateUuid, err := grpc.GRPCClientConn().GetUuidClient().GenerateUuid(ctx, &uuid.GenerateUuidRequest{
 		Type: constant.UUID_TYPE_TIME_RAND,
 	})
@@ -40,5 +44,16 @@ func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink)
 		return "", err
 	}
 
-	return generateUuid.GetValue(), err
+	binaryTransform := binary.NewBinaryTransform()
+	g.Ident, _ = strconv.Atoi(generateUuid.GetValue())
+	g.LongUrl = g.GenerateShortLink.GetUrl()
+	g.Value = binaryTransform.DecToB64(g.Ident)
+	url := constant.LINK_DOMAIN + g.Value
+
+	err = uc.repo.GenerateShortLink(ctx, g)
+	if err != nil {
+		return "", err
+	}
+
+	return url, err
 }
