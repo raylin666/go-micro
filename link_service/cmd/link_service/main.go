@@ -1,16 +1,19 @@
 package main
 
 import (
+	"context"
 	"flag"
+	"fmt"
+	uuid_pb "github.com/raylin666/go-micro-protoc/uuid/v1"
 	"os"
 
-	"link_service/internal/conf"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"link_service/internal/conf"
 
 	consul "github.com/go-kratos/consul/registry"
 	"github.com/hashicorp/consul/api"
@@ -38,6 +41,24 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 		panic(err)
 	}
 
+	registry := consul.New(client)
+	endpoint := "discovery:///micro.uuid.service"
+	conn, err := grpc.DialInsecure(context.Background(), grpc.WithEndpoint(endpoint), grpc.WithDiscovery(registry))
+	if err != nil {
+		panic(err)
+	}
+
+	defer conn.Close()
+
+	uuid_client := uuid_pb.NewUuidClient(conn)
+	reply, err := uuid_client.GenerateUuid(
+		context.Background(),
+		&uuid_pb.GenerateUuidRequest{Type: "time_rand"},
+		)
+
+	fmt.Println(reply)
+
+
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -48,7 +69,7 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 			hs,
 			gs,
 		),
-		kratos.Registrar(consul.New(client)),
+		kratos.Registrar(registry),
 	)
 }
 

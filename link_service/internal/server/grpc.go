@@ -4,7 +4,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	v1 "link_service/api/link/v1"
+	pb "github.com/raylin666/go-micro-protoc/link/v1"
 	"link_service/internal/conf"
 	"link_service/internal/service"
 )
@@ -26,6 +26,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.ShortLinkService, logger log
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterShortLinkServer(srv, greeter)
+	pb.RegisterShortLinkServer(srv, greeter)
 	return srv
 }

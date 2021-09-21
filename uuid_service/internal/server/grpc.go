@@ -4,7 +4,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	v1 "uuid_service/api/uuid/v1"
+	pb "github.com/raylin666/go-micro-protoc/uuid/v1"
 	"uuid_service/internal/conf"
 	"uuid_service/internal/service"
 )
@@ -26,6 +26,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.UuidService, logger log.Logg
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterUuidServer(srv, greeter)
+	pb.RegisterUuidServer(srv, greeter)
 	return srv
 }

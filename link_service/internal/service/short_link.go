@@ -5,7 +5,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"link_service/internal/biz"
 
-	pb "link_service/api/link/v1"
+	pb "github.com/raylin666/go-micro-protoc/link/v1"
 )
 
 type ShortLinkService struct {

@@ -3,7 +3,7 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	pb "uuid_service/api/uuid/v1"
+	pb "github.com/raylin666/go-micro-protoc/uuid/v1"
 )
 
 type Uuid struct {

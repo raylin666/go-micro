@@ -5,7 +5,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"uuid_service/internal/biz"
 
-	pb "uuid_service/api/uuid/v1"
+	pb "github.com/raylin666/go-micro-protoc/uuid/v1"
 )
 
 type UuidService struct {
