@@ -1,10 +1,8 @@
 package main
 
 import (
-	"context"
 	"flag"
-	"fmt"
-	uuid_pb "github.com/raylin666/go-micro-protoc/uuid/v1"
+	"link_service/internal/server"
 	"os"
 
 	"github.com/go-kratos/kratos/v2"
@@ -42,22 +40,9 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 	}
 
 	registry := consul.New(client)
-	endpoint := "discovery:///micro.uuid.service"
-	conn, err := grpc.DialInsecure(context.Background(), grpc.WithEndpoint(endpoint), grpc.WithDiscovery(registry))
-	if err != nil {
-		panic(err)
-	}
 
-	defer conn.Close()
-
-	uuid_client := uuid_pb.NewUuidClient(conn)
-	reply, err := uuid_client.GenerateUuid(
-		context.Background(),
-		&uuid_pb.GenerateUuidRequest{Type: "time_rand"},
-		)
-
-	fmt.Println(reply)
-
+	grpcClientConn := server.NewGRPCClientConn(registry)
+	defer grpcClientConn.GRPCClientConnClose()
 
 	return kratos.New(
 		kratos.ID(id),

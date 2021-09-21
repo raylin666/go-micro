@@ -16,7 +16,10 @@ type ShortLinkService struct {
 }
 
 func NewShortLinkService(uc *biz.ShortLinkUsecase, logger log.Logger) *ShortLinkService {
-	return &ShortLinkService{uc: uc, log: log.NewHelper(logger)}
+	return &ShortLinkService{
+		uc: uc,
+		log: log.NewHelper(logger),
+	}
 }
 
 func (s *ShortLinkService) GenerateShortLink(ctx context.Context, req *pb.GenerateShortLinkRequest) (*pb.GenerateShortLinkReply, error) {
