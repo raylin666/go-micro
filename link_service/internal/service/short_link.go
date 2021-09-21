@@ -23,5 +23,11 @@ func NewShortLinkService(uc *biz.ShortLinkUsecase, logger log.Logger) *ShortLink
 }
 
 func (s *ShortLinkService) GenerateShortLink(ctx context.Context, req *pb.GenerateShortLinkRequest) (*pb.GenerateShortLinkReply, error) {
-	return &pb.GenerateShortLinkReply{}, nil
+	url, err := s.uc.GenerateShortLink(ctx, &biz.ShortLink{
+		GenerateShortLink: req,
+	})
+
+	return &pb.GenerateShortLinkReply{
+		Url: url,
+	}, err
 }

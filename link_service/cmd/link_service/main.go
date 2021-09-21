@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"link_service/internal/server"
+	grpc_client "link_service/internal/util/grpc"
 	"os"
 
 	"github.com/go-kratos/kratos/v2"
@@ -41,8 +41,8 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 
 	registry := consul.New(client)
 
-	grpcClientConn := server.NewGRPCClientConn(registry)
-	defer grpcClientConn.GRPCClientConnClose()
+	// 连接依赖服务客户端
+	grpc_client.NewGRPCClientConn(registry)
 
 	return kratos.New(
 		kratos.ID(id),

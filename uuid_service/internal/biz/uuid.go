@@ -2,8 +2,12 @@ package biz
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	pb "github.com/raylin666/go-micro-protoc/uuid/v1"
+	uuid "github.com/satori/go.uuid"
+	"time"
+	"uuid_service/internal/constant"
 )
 
 type Uuid struct {
@@ -11,7 +15,7 @@ type Uuid struct {
 }
 
 type UuidRepo interface {
-	GenerateUuid(context.Context, *Uuid) (string, error)
+	GenerateUuid(context.Context, *Uuid) error
 }
 
 type UuidUsecase struct {
@@ -24,5 +28,18 @@ func NewUuidUsecase(repo UuidRepo, logger log.Logger) *UuidUsecase {
 }
 
 func (uc *UuidUsecase) GenerateUuid(ctx context.Context, g *Uuid) (string, error) {
-	return uc.repo.GenerateUuid(ctx, g)
+	var (
+		value string
+		err error
+	)
+
+	switch g.GenerateUuid.GetType() {
+	case constant.UUID_TYPE_TIME_RAND:
+		value = fmt.Sprintf("%v", time.Now().UnixNano() / 1e6)
+		break
+	default:
+		value = uuid.NewV4().String()
+	}
+
+	return value, err
 }

@@ -1,4 +1,4 @@
-package server
+package grpc
 
 import (
 	"context"
@@ -16,17 +16,19 @@ var (
 	endpoint = map[string]string{
 		SERVER_ID_UUID: "discovery:///micro.uuid.service",
 	}
+
+	instanceGrpcClientConn *grpcClientConn
 )
 
 type grpcClientConn struct {
-	connPool map[string]*grpc.ClientConn
+	clientConn map[string]*grpc.ClientConn
 
 	uuidClient uuid.UuidClient
 }
 
 func NewGRPCClientConn(registry *registry.Registry) *grpcClientConn {
 	grpc_client_conn := &grpcClientConn{
-		connPool: make(map[string]*grpc.ClientConn),
+		clientConn: make(map[string]*grpc.ClientConn),
 	}
 
 	if endpoint != nil {
@@ -36,7 +38,7 @@ func NewGRPCClientConn(registry *registry.Registry) *grpcClientConn {
 				panic(err)
 			}
 
-			grpc_client_conn.connPool[serverId] = conn
+			grpc_client_conn.clientConn[serverId] = conn
 
 			switch serverId {
 			case SERVER_ID_UUID:
@@ -46,11 +48,16 @@ func NewGRPCClientConn(registry *registry.Registry) *grpcClientConn {
 		}
 	}
 
+	instanceGrpcClientConn = grpc_client_conn
 	return grpc_client_conn
 }
 
 func (g *grpcClientConn) getClient(serverId string) *grpc.ClientConn {
-	return g.connPool[serverId]
+	return g.clientConn[serverId]
+}
+
+func GRPCClientConn() *grpcClientConn {
+	return instanceGrpcClientConn
 }
 
 /**
@@ -64,7 +71,7 @@ func (g *grpcClientConn) GetUuidClient() uuid.UuidClient {
 	GRPC 客户端关闭连接
  */
 func (g *grpcClientConn) GRPCClientConnClose() {
-	for serverId, _ := range g.connPool {
+	for serverId, _ := range g.clientConn {
 		g.getClient(serverId).Close()
 	}
 }
