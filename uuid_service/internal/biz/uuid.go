@@ -41,5 +41,7 @@ func (uc *UuidUsecase) GenerateUuid(ctx context.Context, g *Uuid) (string, error
 		value = uuid.NewV4().String()
 	}
 
+	err = uc.repo.GenerateUuid(ctx, g)
+
 	return value, err
 }
