@@ -6,6 +6,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"link_service/internal/conf"
+	"link_service/internal/data/model"
 	"link_service/internal/util/grpc"
 )
 
@@ -16,13 +17,18 @@ var ProviderSet = wire.NewSet(NewData, NewShortLinkRepo)
 type Data struct {
 	// TODO wrapped database client
 	db *gorm.DB
+
+	model struct{
+		LinkRelation *model.LinkRelationModel
+	}
 }
 
 // NewData .
 func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
+	dataInstance := &Data{}
 	db, err := gorm.Open(mysql.Open(c.Database.GetSource()), &gorm.Config{})
 	if err != nil {
-		return &Data{}, func() {
+		return dataInstance, func() {
 			log.NewHelper(logger).Info("Database connection failed")
 		}, err
 	}
@@ -33,7 +39,10 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 		log.NewHelper(logger).Info("closing the grpc client connection resources")
 	}
 
-	return &Data{
-		db: db,
-	}, cleanup, nil
+	dataInstance.db = db
+
+	// Model 实例
+	dataInstance.model.LinkRelation = model.NewLinkRelationModel(db)
+
+	return dataInstance, cleanup, nil
 }

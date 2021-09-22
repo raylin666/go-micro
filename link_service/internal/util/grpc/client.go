@@ -63,6 +63,9 @@ func (g *grpcClientConn) GetUuidClient() uuid.UuidClient {
 	return g.uuidClient
 }
 
+/**
+	获取 GRPC 客户端连接实例容器
+ */
 func GRPCClientConn() *grpcClientConn {
 	return instanceGrpcClientConn
 }

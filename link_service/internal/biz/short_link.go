@@ -11,11 +11,13 @@ import (
 	"link_service/internal/util/grpc"
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
 )
 
 type ShortLink struct {
 	GenerateShortLink *pb_link.GenerateShortLinkRequest
+	ShortUrlToLongUrl *pb_link.ShortUrlToLongUrlRequest
 
 	Ident   string
 	LongUrl string
@@ -23,6 +25,7 @@ type ShortLink struct {
 
 type ShortLinkRepo interface {
 	GenerateShortLink(context.Context, *ShortLink) error
+	ShortUrlToLongUrl(context.Context, *ShortLink) (string, error)
 }
 
 type ShortLinkUsecase struct {
@@ -59,4 +62,14 @@ func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink)
 	}
 
 	return url, err
+}
+
+func (uc *ShortLinkUsecase) ShortUrlToLongUrl(ctx context.Context, g *ShortLink) (string, error) {
+	g.Ident = strings.Replace(g.ShortUrlToLongUrl.GetUrl(), constant.LINK_DOMAIN, "", 1)
+	url, err := uc.repo.ShortUrlToLongUrl(ctx, g)
+	if err != nil {
+		return "", err
+	}
+
+	return url, nil
 }

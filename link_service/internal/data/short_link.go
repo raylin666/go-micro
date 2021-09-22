@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"link_service/internal/biz"
-	"link_service/internal/data/model"
 )
 
 type shortLinkRepo struct {
@@ -21,5 +20,10 @@ func NewShortLinkRepo(data *Data, logger log.Logger) biz.ShortLinkRepo {
 }
 
 func (r *shortLinkRepo) GenerateShortLink(ctx context.Context, g *biz.ShortLink) error {
-	return model.LinkRelation{}.Create(r.data.db, g.Ident, g.LongUrl)
+	return r.data.model.LinkRelation.Create(g.Ident, g.LongUrl)
+}
+
+func (r *shortLinkRepo) ShortUrlToLongUrl(ctx context.Context, g *biz.ShortLink) (string, error) {
+	url := r.data.model.LinkRelation.GetIdentByLongURL(g.Ident)
+	return url, nil
 }

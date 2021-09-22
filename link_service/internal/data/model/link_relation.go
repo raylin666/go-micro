@@ -13,12 +13,21 @@ type LinkRelation struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-func (LinkRelation) TableName() string {
+type LinkRelationModel struct {
+	db    *gorm.DB
+	model *LinkRelation
+}
+
+func (*LinkRelation) TableName() string {
 	return "link_relation"
 }
 
-func (m LinkRelation) Create(db *gorm.DB, ident string, longUrl string) error {
-	result := db.Model(m).Create(&LinkRelation{
+func NewLinkRelationModel(db *gorm.DB) *LinkRelationModel {
+	return &LinkRelationModel{db: db}
+}
+
+func (m *LinkRelationModel) Create(ident string, longUrl string) error {
+	result := m.db.Model(m.model).Create(&LinkRelation{
 		Ident:     ident,
 		LongUrl:   longUrl,
 		State:     1,
@@ -26,4 +35,10 @@ func (m LinkRelation) Create(db *gorm.DB, ident string, longUrl string) error {
 	})
 
 	return result.Error
+}
+
+func (m *LinkRelationModel) GetIdentByLongURL(ident string) string {
+	var dest LinkRelation
+	m.db.Model(m.model).Where("ident = ?", ident).Find(&dest)
+	return dest.LongUrl
 }
