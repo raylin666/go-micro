@@ -21,5 +21,5 @@ func NewShortLinkRepo(data *Data, logger log.Logger) biz.ShortLinkRepo {
 }
 
 func (r *shortLinkRepo) GenerateShortLink(ctx context.Context, g *biz.ShortLink) error {
-	return model.LinkRelation{}.Create(r.data.db, int64(g.Ident), g.Value, g.LongUrl)
+	return model.LinkRelation{}.Create(r.data.db, g.Ident, g.LongUrl)
 }

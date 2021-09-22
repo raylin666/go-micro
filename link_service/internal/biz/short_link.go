@@ -2,20 +2,22 @@ package biz
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	pb_link "github.com/raylin666/go-micro-protoc/link/v1"
 	uuid "github.com/raylin666/go-micro-protoc/uuid/v1"
 	"link_service/internal/constant"
 	"link_service/internal/util/binary"
 	"link_service/internal/util/grpc"
+	"math/rand"
 	"strconv"
+	"time"
 )
 
 type ShortLink struct {
 	GenerateShortLink *pb_link.GenerateShortLinkRequest
 
-	Ident   int
-	Value   string
+	Ident   string
 	LongUrl string
 }
 
@@ -45,10 +47,11 @@ func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink)
 	}
 
 	binaryTransform := binary.NewBinaryTransform()
-	g.Ident, _ = strconv.Atoi(generateUuid.GetValue())
+	rand.Seed(time.Now().UnixNano())
+	transformInt, _ := strconv.Atoi(fmt.Sprintf("%s%d", generateUuid.GetValue(), rand.Intn(999999 - 100000) + 100000))
 	g.LongUrl = g.GenerateShortLink.GetUrl()
-	g.Value = binaryTransform.DecToB64(g.Ident)
-	url := constant.LINK_DOMAIN + g.Value
+	g.Ident = binaryTransform.DecToB64(transformInt)
+	url := constant.LINK_DOMAIN + g.Ident
 
 	err = uc.repo.GenerateShortLink(ctx, g)
 	if err != nil {
