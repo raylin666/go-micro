@@ -4,16 +4,16 @@ import (
 	"flag"
 	"os"
 
-	"uuid_service/internal/conf"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"uuid_service/internal/conf"
 
-     consul "github.com/go-kratos/consul/registry"
-     "github.com/hashicorp/consul/api"
+	consul "github.com/go-kratos/consul/registry"
+	"github.com/hashicorp/consul/api"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -69,11 +69,12 @@ func main() {
 		panic(err)
 	}
 
-	if sid, err := c.Value("service.id").String(); err == nil {
-		id = sid
-	}
-	Name, _ = c.Value("service.name").String()
-	Version, _ = c.Value("service.version").String()
+	// 初始化配置保存
+	conf.NewStore(&bc)
+
+	id = conf.GetStore().GetService().GetId()
+	Name = conf.GetStore().GetService().GetName()
+	Version = conf.GetStore().GetService().GetVersion()
 
 	logger := log.With(log.NewStdLogger(os.Stdout),
 		"ts", log.DefaultTimestamp,

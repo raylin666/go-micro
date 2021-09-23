@@ -78,11 +78,9 @@ func main() {
 	// 初始化配置保存
 	conf.NewStore(&bc)
 
-	if sid, err := c.Value("service.id").String(); err == nil {
-		id = sid
-	}
-	Name, _ = c.Value("service.name").String()
-	Version, _ = c.Value("service.version").String()
+	id = conf.GetStore().GetService().GetId()
+	Name = conf.GetStore().GetService().GetName()
+	Version = conf.GetStore().GetService().GetVersion()
 
 	logger := log.With(log.NewStdLogger(os.Stdout),
 		"ts", log.DefaultTimestamp,
