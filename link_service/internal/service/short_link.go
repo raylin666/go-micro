@@ -21,9 +21,7 @@ func NewShortLinkService(uc *biz.ShortLinkUsecase, logger log.Logger) *ShortLink
 	}
 }
 
-/**
-	生成短链接
- */
+// GenerateShortLink 生成短链接 /**
 func (s *ShortLinkService) GenerateShortLink(ctx context.Context, req *pb.GenerateShortLinkRequest) (*pb.GenerateShortLinkReply, error) {
 	url, err := s.uc.GenerateShortLink(ctx, &biz.ShortLink{
 		GenerateShortLink: req,
@@ -34,9 +32,7 @@ func (s *ShortLinkService) GenerateShortLink(ctx context.Context, req *pb.Genera
 	}, err
 }
 
-/**
-	通过短链接拉取长链接
- */
+// ShortUrlToLongUrl 通过短链接拉取长链接 /**
 func (s *ShortLinkService) ShortUrlToLongUrl(ctx context.Context, req * pb.ShortUrlToLongUrlRequest) (*pb.ShortUrlToLongUrlReply, error) {
 	url, err := s.uc.ShortUrlToLongUrl(ctx, &biz.ShortLink{
 		ShortUrlToLongUrl: req,

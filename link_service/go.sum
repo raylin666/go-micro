@@ -292,16 +292,6 @@ github.com/prometheus/procfs v0.0.2/go.mod h1:TjEm7ze935MbeOT/UhFTIMYKhuLP4wbCsT
 github.com/prometheus/procfs v0.0.8/go.mod h1:7Qr8sr6344vo1JqZ6HhLceV9o3AJ1Ff+GxbHq6oeK9A=
 github.com/rakyll/statik v0.1.7 h1:OF3QCZUuyPxuGEP7B4ypUa7sB/iHtqOTDYZXGM8KOdQ=
 github.com/rakyll/statik v0.1.7/go.mod h1:AlZONWzMtEnMs7W4e/1LURLiI49pIMmp6V9Unghqrcc=
-github.com/raylin666/go-micro-protoc v1.0.0 h1:4iUH2zaCmQ3U8qozLdXQwoY40LgCwJCjQFwzO2dqWXo=
-github.com/raylin666/go-micro-protoc v1.0.0/go.mod h1:G22uylVxG47HqcxQiEAzvDcoixteC7Ht8hFPGrB+rKE=
-github.com/raylin666/go-micro-protoc v1.0.1 h1:K/8NuC6gWKywOxqgdqBx47AT2S/GOv32cNmpm9vFo1Q=
-github.com/raylin666/go-micro-protoc v1.0.1/go.mod h1:G22uylVxG47HqcxQiEAzvDcoixteC7Ht8hFPGrB+rKE=
-github.com/raylin666/go-micro-protoc v1.0.3 h1:FVXFDXEr8eOozZXKxaXWqB6Dckxlw3vV1r1FF9LOYsc=
-github.com/raylin666/go-micro-protoc v1.0.3/go.mod h1:G22uylVxG47HqcxQiEAzvDcoixteC7Ht8hFPGrB+rKE=
-github.com/raylin666/go-micro-protoc v1.0.4 h1:ZMuycwUm109UnuHzy8mEWBfbZC7WcP0PJVLMxOHLmwc=
-github.com/raylin666/go-micro-protoc v1.0.4/go.mod h1:G22uylVxG47HqcxQiEAzvDcoixteC7Ht8hFPGrB+rKE=
-github.com/raylin666/go-micro-protoc v1.0.5 h1:3v5CgHyEYeNnaKKqr0pbppVVjms+hwkzFl2UBMjLfZg=
-github.com/raylin666/go-micro-protoc v1.0.5/go.mod h1:G22uylVxG47HqcxQiEAzvDcoixteC7Ht8hFPGrB+rKE=
 github.com/raylin666/go-micro-protoc v1.0.6 h1:Qj5RLVVrIbIjaDVqWjGijC0xAF+TflEdSajcoTzpQHk=
 github.com/raylin666/go-micro-protoc v1.0.6/go.mod h1:G22uylVxG47HqcxQiEAzvDcoixteC7Ht8hFPGrB+rKE=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=

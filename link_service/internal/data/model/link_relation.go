@@ -39,6 +39,6 @@ func (m *LinkRelationModel) Create(ident string, longUrl string) error {
 
 func (m *LinkRelationModel) GetIdentByLongURL(ident string) string {
 	var dest LinkRelation
-	m.db.Model(m.model).Where("ident = ?", ident).Find(&dest)
+	m.db.Model(m.model).Where("ident = ?", ident).Select("long_url").Find(&dest)
 	return dest.LongUrl
 }
