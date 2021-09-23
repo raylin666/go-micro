@@ -75,6 +75,9 @@ func main() {
 		panic(err)
 	}
 
+	// 初始化配置保存
+	conf.NewStore(&bc)
+
 	if sid, err := c.Value("service.id").String(); err == nil {
 		id = sid
 	}

@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	nethttp "net/http"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
@@ -11,6 +10,7 @@ import (
 	pb "github.com/raylin666/go-micro-protoc/link/v1"
 	"link_service/internal/conf"
 	"link_service/internal/service"
+	nethttp "net/http"
 )
 
 // NewHTTPServer new a HTTP server.
@@ -71,5 +71,8 @@ func NewHTTPServer(c *conf.Server, greeter *service.ShortLinkService, logger log
 
 	srv := srvHandler()
 	pb.RegisterShortLinkHTTPServer(srv, greeter)
+
+	log.NewHelper(logger).Info("HTTP service started successfully")
+
 	return srv
 }

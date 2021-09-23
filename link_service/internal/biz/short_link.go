@@ -6,6 +6,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	pb_link "github.com/raylin666/go-micro-protoc/link/v1"
 	uuid "github.com/raylin666/go-micro-protoc/uuid/v1"
+	"link_service/internal/conf"
 	"link_service/internal/constant"
 	"link_service/internal/util/binary"
 	"link_service/internal/util/grpc"
@@ -54,7 +55,7 @@ func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink)
 	transformInt, _ := strconv.Atoi(fmt.Sprintf("%s%d", generateUuid.GetValue(), rand.Intn(999999 - 100000) + 100000))
 	g.LongUrl = g.GenerateShortLink.GetUrl()
 	g.Ident = binaryTransform.DecToB64(transformInt)
-	url := constant.LINK_DOMAIN + g.Ident
+	url := conf.GetStore().GetApp().GetLinkDomain() + g.Ident
 
 	err = uc.repo.GenerateShortLink(ctx, g)
 	if err != nil {
@@ -65,7 +66,7 @@ func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink)
 }
 
 func (uc *ShortLinkUsecase) ShortUrlToLongUrl(ctx context.Context, g *ShortLink) (string, error) {
-	g.Ident = strings.Replace(g.ShortUrlToLongUrl.GetUrl(), constant.LINK_DOMAIN, "", 1)
+	g.Ident = strings.Replace(g.ShortUrlToLongUrl.GetUrl(), conf.GetStore().GetApp().GetLinkDomain(), "", 1)
 	url, err := uc.repo.ShortUrlToLongUrl(ctx, g)
 	if err != nil {
 		return "", err

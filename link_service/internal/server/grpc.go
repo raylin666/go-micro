@@ -27,5 +27,8 @@ func NewGRPCServer(c *conf.Server, greeter *service.ShortLinkService, logger log
 	}
 	srv := grpc.NewServer(opts...)
 	pb.RegisterShortLinkServer(srv, greeter)
+
+	log.NewHelper(logger).Info("gRPC service started successfully")
+
 	return srv
 }

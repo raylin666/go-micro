@@ -1,3 +1,5 @@
+app:
+  link_domain: http://127.0.0.1:20000/g/
 service:
   id: link_1
   name: micro.link.service
