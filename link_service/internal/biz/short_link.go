@@ -7,9 +7,8 @@ import (
 	pb_link "github.com/raylin666/go-micro-protoc/link/v1"
 	uuid "github.com/raylin666/go-micro-protoc/uuid/v1"
 	"link_service/internal/conf"
-	"link_service/internal/constant"
-	"link_service/internal/util/binary"
-	"link_service/internal/util/grpc"
+	"link_service/repositorie/pool"
+	"link_service/util/binary"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -42,10 +41,12 @@ func NewShortLinkUsecase(repo ShortLinkRepo, logger log.Logger) *ShortLinkUsecas
 }
 
 func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink) (string, error) {
-	generateUuid, err := grpc.GRPCClientConn().GetUuidClient().GenerateUuid(ctx, &uuid.GenerateUuidRequest{
-		Type: constant.UUID_TYPE_TIME_RAND,
-	})
+	grpcClient, err := pool.GetUuidGRPCClientPool()
+	if err != nil {
+		return "", err
+	}
 
+	generateUuid, err := grpcClient.GenerateUuid(ctx, &uuid.GenerateUuidRequest{Type: "time_rand"})
 	if err != nil {
 		return "", err
 	}

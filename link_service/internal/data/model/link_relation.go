@@ -1,7 +1,7 @@
 package model
 
 import (
-	"gorm.io/gorm"
+	"github.com/raylin666/go-utils/database/gorm"
 	"time"
 )
 

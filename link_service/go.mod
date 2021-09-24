@@ -12,9 +12,10 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/raylin666/go-micro-protoc v1.0.6
-	google.golang.org/grpc v1.39.1
+	github.com/raylin666/go-utils v0.0.0-20210924094623-ad99a8ee8ab6
+	google.golang.org/grpc v1.40.0
 	google.golang.org/protobuf v1.27.1
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
-	gorm.io/driver/mysql v1.1.2
-	gorm.io/gorm v1.21.15
 )
+
+replace github.com/raylin666/go-utils => /Users/linshan/Container/Golang/go-utils
