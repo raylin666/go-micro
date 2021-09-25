@@ -26,7 +26,7 @@ func NewUploadUsecase(repo UploadRepo, logger log.Logger) *UploadUsecase {
 }
 
 func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (string, error) {
-	storagePathFile := "x/ccc.jpg"
+	storagePathFile := "storage/ccc.jpg"
 	put, err := qiniu.Get().FormUploaderPut([]byte(g.StreamUploadFile.GetStream()), storagePathFile)
 	if err != nil {
 		return "", err
