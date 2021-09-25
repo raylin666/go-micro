@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -14,7 +15,13 @@ import (
 func NewGRPCServer(c *conf.Server, greeter *service.ShortLinkService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
-			recovery.Recovery(),
+			// Recovery 中间件用于异常恢复，服务出现异常的情况下，防止程序直接退出
+			recovery.Recovery(
+				recovery.WithLogger(log.DefaultLogger),
+				recovery.WithHandler(func(ctx context.Context, req, err interface{}) error {
+					return nil
+				}),
+			),
 			logging.Server(logger),
 			logging.Client(logger),
 		),

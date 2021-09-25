@@ -14,11 +14,17 @@ import (
 	nethttp "net/http"
 )
 
-// NewHTTPServer new a HTTP server.
+// NewHTTPServer new an HTTP server.
 func NewHTTPServer(c *conf.Server, greeter *service.ShortLinkService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
-			recovery.Recovery(),
+			// Recovery 中间件用于异常恢复，服务出现异常的情况下，防止程序直接退出
+			recovery.Recovery(
+				recovery.WithLogger(log.DefaultLogger),
+				recovery.WithHandler(func(ctx context.Context, req, err interface{}) error {
+					return nil
+				}),
+			),
 			logging.Server(logger),
 			logging.Client(logger),
 		),
