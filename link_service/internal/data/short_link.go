@@ -19,11 +19,11 @@ func NewShortLinkRepo(data *Data, logger log.Logger) biz.ShortLinkRepo {
 	}
 }
 
-func (r *shortLinkRepo) GenerateShortLink(ctx context.Context, g *biz.ShortLink) error {
+func (r *shortLinkRepo) GenerateShortUrl(ctx context.Context, g *biz.ShortLink) error {
 	return r.data.model.LinkRelation.Create(g.Ident, g.LongUrl)
 }
 
-func (r *shortLinkRepo) ShortUrlToLongUrl(ctx context.Context, g *biz.ShortLink) (string, error) {
+func (r *shortLinkRepo) TransformLongUrl(ctx context.Context, g *biz.ShortLink) (string, error) {
 	url := r.data.model.LinkRelation.GetIdentByLongURL(g.Ident)
 	return url, nil
 }

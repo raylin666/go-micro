@@ -21,24 +21,24 @@ func NewShortLinkService(uc *biz.ShortLinkUsecase, logger log.Logger) *ShortLink
 	}
 }
 
-// GenerateShortLink 生成短链接 /**
-func (s *ShortLinkService) GenerateShortLink(ctx context.Context, req *pb.GenerateShortLinkRequest) (*pb.GenerateShortLinkReply, error) {
-	url, err := s.uc.GenerateShortLink(ctx, &biz.ShortLink{
+// GenerateShortUrl 生成短链接 /**
+func (s *ShortLinkService) GenerateShortUrl(ctx context.Context, req *pb.GenerateShortUrlRequest) (*pb.GenerateShortUrlReply, error) {
+	url, err := s.uc.GenerateShortUrl(ctx, &biz.ShortLink{
 		GenerateShortLink: req,
 	})
 
-	return &pb.GenerateShortLinkReply{
+	return &pb.GenerateShortUrlReply{
 		Url: url,
 	}, err
 }
 
-// ShortUrlToLongUrl 通过短链接拉取长链接 /**
-func (s *ShortLinkService) ShortUrlToLongUrl(ctx context.Context, req * pb.ShortUrlToLongUrlRequest) (*pb.ShortUrlToLongUrlReply, error) {
-	url, err := s.uc.ShortUrlToLongUrl(ctx, &biz.ShortLink{
+// TransformLongUrl 通过短链接拉取长链接 /**
+func (s *ShortLinkService) TransformLongUrl(ctx context.Context, req * pb.TransformLongUrlRequest) (*pb.TransformLongUrlReply, error) {
+	url, err := s.uc.TransformLongUrl(ctx, &biz.ShortLink{
 		ShortUrlToLongUrl: req,
 	})
 
-	return &pb.ShortUrlToLongUrlReply{
+	return &pb.TransformLongUrlReply{
 		Url: url,
 	}, err
 }

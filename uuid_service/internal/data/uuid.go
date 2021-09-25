@@ -19,6 +19,6 @@ func NewUuidRepo(data *Data, logger log.Logger) biz.UuidRepo {
 	}
 }
 
-func (r *uuidRepo) GenerateUuid(ctx context.Context, g *biz.Uuid) error {
+func (r *uuidRepo) Generate(ctx context.Context, g *biz.Uuid) error {
 	return nil
 }

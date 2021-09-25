@@ -11,11 +11,11 @@ import (
 )
 
 type Uuid struct {
-	GenerateUuid *pb.GenerateUuidRequest
+	GenerateUuid *pb.GenerateRequest
 }
 
 type UuidRepo interface {
-	GenerateUuid(context.Context, *Uuid) error
+	Generate(context.Context, *Uuid) error
 }
 
 type UuidUsecase struct {
@@ -27,7 +27,7 @@ func NewUuidUsecase(repo UuidRepo, logger log.Logger) *UuidUsecase {
 	return &UuidUsecase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (uc *UuidUsecase) GenerateUuid(ctx context.Context, g *Uuid) (string, error) {
+func (uc *UuidUsecase) Generate(ctx context.Context, g *Uuid) (string, error) {
 	var (
 		value string
 		err error
@@ -41,7 +41,7 @@ func (uc *UuidUsecase) GenerateUuid(ctx context.Context, g *Uuid) (string, error
 		value = uuid.NewV4().String()
 	}
 
-	err = uc.repo.GenerateUuid(ctx, g)
+	err = uc.repo.Generate(ctx, g)
 
 	return value, err
 }

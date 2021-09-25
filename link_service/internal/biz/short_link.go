@@ -16,16 +16,16 @@ import (
 )
 
 type ShortLink struct {
-	GenerateShortLink *pb_link.GenerateShortLinkRequest
-	ShortUrlToLongUrl *pb_link.ShortUrlToLongUrlRequest
+	GenerateShortLink *pb_link.GenerateShortUrlRequest
+	ShortUrlToLongUrl *pb_link.TransformLongUrlRequest
 
 	Ident   string
 	LongUrl string
 }
 
 type ShortLinkRepo interface {
-	GenerateShortLink(context.Context, *ShortLink) error
-	ShortUrlToLongUrl(context.Context, *ShortLink) (string, error)
+	GenerateShortUrl(context.Context, *ShortLink) error
+	TransformLongUrl(context.Context, *ShortLink) (string, error)
 }
 
 type ShortLinkUsecase struct {
@@ -40,13 +40,13 @@ func NewShortLinkUsecase(repo ShortLinkRepo, logger log.Logger) *ShortLinkUsecas
 	}
 }
 
-func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink) (string, error) {
+func (uc *ShortLinkUsecase) GenerateShortUrl(ctx context.Context, g *ShortLink) (string, error) {
 	grpcClient, err := pool.GetUuidGRPCClientPool()
 	if err != nil {
 		return "", err
 	}
 
-	generateUuid, err := grpcClient.GenerateUuid(ctx, &uuid.GenerateUuidRequest{Type: "time_rand"})
+	generateUuid, err := grpcClient.Generate(ctx, &uuid.GenerateRequest{Type: "time_rand"})
 	if err != nil {
 		return "", err
 	}
@@ -58,7 +58,7 @@ func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink)
 	g.Ident = binaryTransform.DecToB64(transformInt)
 	url := conf.GetStore().GetApp().GetLinkDomain() + g.Ident
 
-	err = uc.repo.GenerateShortLink(ctx, g)
+	err = uc.repo.GenerateShortUrl(ctx, g)
 	if err != nil {
 		return "", err
 	}
@@ -66,9 +66,9 @@ func (uc *ShortLinkUsecase) GenerateShortLink(ctx context.Context, g *ShortLink)
 	return url, err
 }
 
-func (uc *ShortLinkUsecase) ShortUrlToLongUrl(ctx context.Context, g *ShortLink) (string, error) {
+func (uc *ShortLinkUsecase) TransformLongUrl(ctx context.Context, g *ShortLink) (string, error) {
 	g.Ident = strings.Replace(g.ShortUrlToLongUrl.GetUrl(), conf.GetStore().GetApp().GetLinkDomain(), "", 1)
-	url, err := uc.repo.ShortUrlToLongUrl(ctx, g)
+	url, err := uc.repo.TransformLongUrl(ctx, g)
 	if err != nil {
 		return "", err
 	}
