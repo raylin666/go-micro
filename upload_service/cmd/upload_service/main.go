@@ -4,6 +4,7 @@ import (
 	"flag"
 	uploadq_qiniu "github.com/raylin666/go-utils/upload/qiniu"
 	"os"
+	"upload_service/repositorie/pool"
 	"upload_service/repositorie/upload/qiniu"
 
 	consul "github.com/go-kratos/consul/registry"
@@ -40,6 +41,9 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 	}
 
 	registry := consul.New(client)
+
+	// 初始化依赖 GRPC 服务客户端连接池
+	pool.NewGRPCClientPool(registry, logger)
 
 	return kratos.New(
 		kratos.ID(id),
@@ -102,7 +106,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer cleanup()
+	defer func() {
+		// GRPC 客户端连接关闭
+		pool.CloseGRPCClientPool(logger)
+		log.NewHelper(logger).Info("closing the grpc client connection resources")
+
+		cleanup()
+	}()
 
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {
