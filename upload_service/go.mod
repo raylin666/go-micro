@@ -9,11 +9,12 @@ require (
 	github.com/google/wire v0.5.0
 	github.com/hashicorp/consul/api v1.10.1
 	github.com/kr/text v0.2.0 // indirect
+	github.com/mitchellh/mapstructure v1.4.1
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
-	github.com/raylin666/go-micro-protoc v1.0.6 // indirect
-	github.com/raylin666/go-utils v1.0.0 // indirect
-	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
-	google.golang.org/grpc v1.40.0 // indirect
+	github.com/qiniu/go-sdk/v7 v7.10.0
+	github.com/raylin666/go-micro-protoc v1.0.6
+	github.com/raylin666/go-utils v1.0.0
+	google.golang.org/grpc v1.40.0
 	google.golang.org/protobuf v1.27.1
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )

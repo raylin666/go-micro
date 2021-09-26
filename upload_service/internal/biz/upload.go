@@ -4,9 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/mitchellh/mapstructure"
 	pb "github.com/raylin666/go-micro-protoc/upload/v1"
 	uuid "github.com/raylin666/go-micro-protoc/uuid/v1"
+	"mime"
 	"time"
+	"upload_service/internal/conf"
 	"upload_service/repositorie/pool"
 	"upload_service/repositorie/upload/qiniu"
 )
@@ -29,15 +32,24 @@ func NewUploadUsecase(repo UploadRepo, logger log.Logger) *UploadUsecase {
 }
 
 // StreamUploadFile 数据流方式上传文件
-func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (string, error) {
+func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (*qiniu.UploadPutRet, error) {
+	var (
+		ret = new(qiniu.UploadPutRet)
+	)
+
 	grpcClient, err := pool.GetUuidGRPCClientPool()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	generateUuid, err := grpcClient.Generate(ctx, &uuid.GenerateRequest{})
 	if err != nil {
-		return "", err
+		return nil, err
+	}
+
+	if len(g.StreamUploadFile.GetStream()) <= 0 {
+		err = pb.ErrorStreamEmpty("stream is empty")
+		return nil, err
 	}
 
 	storagePathFile := fmt.Sprintf(
@@ -48,16 +60,21 @@ func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (strin
 		generateUuid.GetValue(),
 		)
 	if len(g.StreamUploadFile.GetMimeType()) > 0 {
-		storagePathFile = fmt.Sprintf("%s.%s", storagePathFile, g.StreamUploadFile.GetMimeType())
+		if ext, err := mime.ExtensionsByType(g.StreamUploadFile.GetMimeType()); err == nil {
+			storagePathFile = fmt.Sprintf("%s%s", storagePathFile, ext[0])
+		}
 	}
 
-	put, err := qiniu.Get().FormUploaderPut([]byte(g.StreamUploadFile.GetStream()), storagePathFile)
+	put, err := qiniu.Get().FormUploaderPut(g.StreamUploadFile.GetStream(), storagePathFile)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	fmt.Println(put)
+	// interface/map 转换 struct
+	if err = mapstructure.Decode(put, &ret); err == nil {
+		ret.Url = conf.GetStore().GetUpload().GetCdn() + ret.Key
+	}
 
-	return "put", nil
+	return ret, nil
 }
 

@@ -21,11 +21,19 @@ func NewUploadService(uc *biz.UploadUsecase, logger log.Logger) *UploadService {
 }
 
 func (s *UploadService) StreamUploadFile(ctx context.Context, req *pb.StreamUploadFileRequest) (*pb.StreamUploadFileReply, error) {
-	url, err := s.uc.StreamUploadFile(ctx, &biz.Upload{
+	ret, err := s.uc.StreamUploadFile(ctx, &biz.Upload{
 		StreamUploadFile: req,
 	})
 
 	return &pb.StreamUploadFileReply{
-		Url: url,
+		Hash: ret.Hash,
+		Key: ret.Key,
+		Fsize: ret.Fsize,
+		Url: ret.Url,
+		Name: ret.Name,
+		Bucket: ret.Bucket,
+		Ext: ret.Ext,
+		MimeType: ret.MimeType,
+		Uuid: ret.Uuid,
 	}, err
 }

@@ -60,4 +60,5 @@ message Upload {
     string zone = 4;
   }
   Qiniu qiniu = 1;
+  string cdn = 2;
 }
