@@ -5,12 +5,12 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
-	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/go-kratos/swagger-api/openapiv2"
 	pb "github.com/raylin666/go-micro-protoc/services/upload/v1"
 	"upload_service/internal/conf"
 	"upload_service/internal/service"
+	"upload_service/repositorie/middleware/validate"
 )
 
 // NewHTTPServer new a HTTP server.
