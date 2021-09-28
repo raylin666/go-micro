@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
-	pb "github.com/raylin666/go-micro-protoc/uuid/v1"
+	pb "github.com/raylin666/go-micro-protoc/services/uuid/v1"
 	uuid "github.com/satori/go.uuid"
 	"time"
 	"uuid_service/internal/constant"

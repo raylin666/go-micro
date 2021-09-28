@@ -6,6 +6,7 @@ import (
 	"os"
 	"upload_service/repositorie/pool"
 	"upload_service/repositorie/upload/qiniu"
+	"upload_service/repositorie/validator"
 
 	consul "github.com/go-kratos/consul/registry"
 	"github.com/go-kratos/kratos/v2"
@@ -87,6 +88,9 @@ func main() {
 		conf.GetStore().GetUpload().GetQiniu().GetZone(),
 		&uploadq_qiniu.Config{},
 		)
+
+	// 初始化数据验证器
+	validator.New("en")
 
 	id = conf.GetStore().GetService().GetId()
 	Name = conf.GetStore().GetService().GetName()

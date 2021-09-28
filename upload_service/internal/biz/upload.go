@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/mitchellh/mapstructure"
-	pb "github.com/raylin666/go-micro-protoc/upload/v1"
-	uuid "github.com/raylin666/go-micro-protoc/uuid/v1"
+	pb "github.com/raylin666/go-micro-protoc/services/upload/v1"
+	uuid "github.com/raylin666/go-micro-protoc/services/uuid/v1"
 	"mime"
 	"time"
 	"upload_service/internal/conf"
@@ -33,10 +33,6 @@ func NewUploadUsecase(repo UploadRepo, logger log.Logger) *UploadUsecase {
 
 // StreamUploadFile 数据流方式上传文件
 func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (*qiniu.UploadPutRet, error) {
-	var (
-		ret = new(qiniu.UploadPutRet)
-	)
-
 	grpcClient, err := pool.GetUuidGRPCClientPool()
 	if err != nil {
 		return nil, err
@@ -44,11 +40,6 @@ func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (*qini
 
 	generateUuid, err := grpcClient.Generate(ctx, &uuid.GenerateRequest{})
 	if err != nil {
-		return nil, err
-	}
-
-	if len(g.StreamUploadFile.GetStream()) <= 0 {
-		err = pb.ErrorStreamEmpty("stream is empty")
 		return nil, err
 	}
 
@@ -69,6 +60,10 @@ func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (*qini
 	if err != nil {
 		return nil, err
 	}
+
+	var (
+		ret = new(qiniu.UploadPutRet)
+	)
 
 	// interface/map 转换 struct
 	if err = mapstructure.Decode(put, &ret); err == nil {

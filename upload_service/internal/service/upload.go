@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	pb "github.com/raylin666/go-micro-protoc/upload/v1"
+	pb "github.com/raylin666/go-micro-protoc/services/upload/v1"
 	"upload_service/internal/biz"
 )
 
@@ -25,6 +25,10 @@ func (s *UploadService) StreamUploadFile(ctx context.Context, req *pb.StreamUplo
 		StreamUploadFile: req,
 	})
 
+	if err != nil {
+		return nil, err
+	}
+
 	return &pb.StreamUploadFileReply{
 		Hash: ret.Hash,
 		Key: ret.Key,
@@ -35,5 +39,5 @@ func (s *UploadService) StreamUploadFile(ctx context.Context, req *pb.StreamUplo
 		Ext: ret.Ext,
 		MimeType: ret.MimeType,
 		Uuid: ret.Uuid,
-	}, err
+	}, nil
 }

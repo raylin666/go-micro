@@ -1,11 +1,13 @@
 package server
 
 import (
+	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	pb "github.com/raylin666/go-micro-protoc/uuid/v1"
+	pb "github.com/raylin666/go-micro-protoc/services/uuid/v1"
 	"uuid_service/internal/conf"
 	"uuid_service/internal/service"
 )
@@ -14,9 +16,15 @@ import (
 func NewGRPCServer(c *conf.Server, greeter *service.UuidService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
-			recovery.Recovery(),
+			recovery.Recovery(
+				recovery.WithLogger(log.DefaultLogger),
+				recovery.WithHandler(func(ctx context.Context, req, err interface{}) error {
+					return nil
+				}),
+			),
 			logging.Server(logger),
 			logging.Client(logger),
+			validate.Validator(),
 		),
 	}
 	if c.Grpc.Network != "" {

@@ -5,8 +5,9 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	pb "github.com/raylin666/go-micro-protoc/link/v1"
+	pb "github.com/raylin666/go-micro-protoc/services/link/v1"
 	"link_service/internal/conf"
 	"link_service/internal/service"
 )
@@ -24,6 +25,7 @@ func NewGRPCServer(c *conf.Server, greeter *service.ShortLinkService, logger log
 			),
 			logging.Server(logger),
 			logging.Client(logger),
+			validate.Validator(),
 		),
 	}
 	if c.Grpc.Network != "" {

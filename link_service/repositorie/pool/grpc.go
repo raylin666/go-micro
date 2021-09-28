@@ -3,7 +3,7 @@ package pool
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	uuid "github.com/raylin666/go-micro-protoc/uuid/v1"
+	uuid "github.com/raylin666/go-micro-protoc/services/uuid/v1"
 	"google.golang.org/grpc/connectivity"
 
 	"github.com/go-kratos/consul/registry"

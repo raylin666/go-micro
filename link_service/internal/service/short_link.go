@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	pb "github.com/raylin666/go-micro-protoc/link/v1"
+	pb "github.com/raylin666/go-micro-protoc/services/link/v1"
 	"link_service/internal/biz"
 )
 

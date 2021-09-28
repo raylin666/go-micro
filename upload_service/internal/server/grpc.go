@@ -7,7 +7,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	pb "github.com/raylin666/go-micro-protoc/upload/v1"
+	pb "github.com/raylin666/go-micro-protoc/services/upload/v1"
 	"upload_service/internal/conf"
 	"upload_service/internal/service"
 )
