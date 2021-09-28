@@ -7,5 +7,5 @@ var (
 )
 
 func GetMsg(code int) string {
-	return ""
+	return errorContext[code]
 }
