@@ -43,7 +43,7 @@ func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (*qini
 		return nil, err
 	}
 
-	storagePathFile := fmt.Sprintf(
+	key := fmt.Sprintf(
 		"micro/%d/%02d%02d/%s",
 		time.Now().Year(),
 		int(time.Now().Month()),
@@ -52,11 +52,11 @@ func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (*qini
 		)
 	if len(g.StreamUploadFile.GetMimeType()) > 0 {
 		if ext, err := mime.ExtensionsByType(g.StreamUploadFile.GetMimeType()); err == nil {
-			storagePathFile = fmt.Sprintf("%s%s", storagePathFile, ext[0])
+			key = fmt.Sprintf("%s%s", key, ext[0])
 		}
 	}
 
-	put, err := qiniu.Get().FormUploaderPut(g.StreamUploadFile.GetStream(), storagePathFile)
+	put, err := qiniu.Get().FormUploaderPut(g.StreamUploadFile.GetStream(), key)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (uc *UploadUsecase) StreamUploadFile(ctx context.Context, g *Upload) (*qini
 
 	// interface/map 转换 struct
 	if err = mapstructure.Decode(put, &ret); err == nil {
-		ret.Url = conf.GetStore().GetUpload().GetCdn() + ret.Key
+		ret.Url = qiniu.Get().MakePublicURL(conf.GetStore().GetUpload().GetCdn(), ret.Key)
 	}
 
 	return ret, nil
