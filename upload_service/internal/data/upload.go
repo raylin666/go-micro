@@ -22,3 +22,7 @@ func NewUploadRepo(data *Data, logger log.Logger) biz.UploadRepo {
 func (r *UploadRepo) StreamUploadFile(ctx context.Context, g *biz.Upload) error {
 	return nil
 }
+
+func (r *UploadRepo) UrlUploadFile(ctx context.Context, g *biz.Upload) error {
+	return nil
+}

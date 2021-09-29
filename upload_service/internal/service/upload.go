@@ -41,3 +41,22 @@ func (s *UploadService) StreamUploadFile(ctx context.Context, req *pb.StreamUplo
 		Uuid: ret.Uuid,
 	}, nil
 }
+
+func (s *UploadService) UrlUploadFile(ctx context.Context, req *pb.UrlUploadFileRequest) (*pb.UrlUploadFileReply, error) {
+	ret, err := s.uc.UrlUploadFile(ctx, &biz.Upload{
+		UrlUploadFile: req,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.UrlUploadFileReply{
+		Hash: ret.Hash,
+		Key: ret.Key,
+		Fsize: ret.Fsize,
+		Url: ret.Url,
+		MimeType: ret.MimeType,
+	}, nil
+}
+
