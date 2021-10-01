@@ -22,3 +22,15 @@ func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 func (r *AuthRepo) GetRolesForUser(ctx context.Context, g *biz.Auth) error {
 	return nil
 }
+
+func (r *AuthRepo) AddRoleForUser(ctx context.Context, g *biz.Auth) error {
+	return nil
+}
+
+func (r *AuthRepo) GetUsersForRole(ctx context.Context, g *biz.Auth) error {
+	return nil
+}
+
+func (r *AuthRepo) HasRoleForUser(ctx context.Context, g *biz.Auth) error {
+	return nil
+}
