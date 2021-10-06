@@ -1,10 +1,12 @@
 package service
 
 import (
-	repositorie_casbin "auth_service/internal/repositorie/casbin"
+	repositorie_casbin "auth_service/repositorie/casbin"
 	"context"
 	"github.com/casbin/casbin/v2"
+	"github.com/raylin666/go-micro-protoc/errors"
 	pb "github.com/raylin666/go-micro-protoc/services/auth/v1"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"auth_service/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
@@ -34,14 +36,12 @@ func (s *AuthService) GetRolesForUser(ctx context.Context, req *pb.GetRolesForUs
 		return nil, err
 	}
 
-	return &pb.GetRolesForUserReply{
-		Roles: roles,
-	}, nil
+	return &pb.GetRolesForUserReply{Roles: roles}, nil
 }
 
 // AddRoleForUser 用户添加角色
 func (s *AuthService) AddRoleForUser(ctx context.Context, req *pb.AddRoleForUserRequest) (*pb.AddRoleForUserReply, error) {
-	roles, err := s.uc.AddRoleForUser(ctx, &biz.Auth{
+	is_ok, err := s.uc.AddRoleForUser(ctx, &biz.Auth{
 		AddRoleForUser: req,
 	})
 
@@ -49,9 +49,7 @@ func (s *AuthService) AddRoleForUser(ctx context.Context, req *pb.AddRoleForUser
 		return nil, err
 	}
 
-	return &pb.AddRoleForUserReply{
-		Roles: roles,
-	}, nil
+	return &pb.AddRoleForUserReply{IsOk: is_ok}, nil
 }
 
 // GetUsersForRole 获取具有角色的用户
@@ -64,9 +62,7 @@ func (s *AuthService) GetUsersForRole(ctx context.Context, req *pb.GetUsersForRo
 		return nil, err
 	}
 
-	return &pb.GetUsersForRoleReply{
-		Users: users,
-	}, nil
+	return &pb.GetUsersForRoleReply{Users: users}, nil
 }
 
 // HasRoleForUser 确定用户是否具有角色
@@ -79,7 +75,39 @@ func (s *AuthService) HasRoleForUser(ctx context.Context, req *pb.HasRoleForUser
 		return nil, err
 	}
 
-	return &pb.HasRoleForUserReply{
-		Has: has,
-	}, nil
+	return &pb.HasRoleForUserReply{Has: has}, nil
+}
+
+// DeleteRoleForUser 删除用户的角色
+func (s *AuthService) DeleteRoleForUser(ctx context.Context, req *pb.DeleteRoleForUserRequest) (*emptypb.Empty, error) {
+	is_ok, err := s.uc.DeleteRoleForUser(ctx, &biz.Auth{
+		DeleteRoleForUser: req,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !is_ok {
+		return nil, errors.ErrorResourceDeleteError("resource delete error")
+	}
+
+	return nil, nil
+}
+
+// DeleteRolesForUser  删除用户的所有角色
+func (s *AuthService) DeleteRolesForUser(ctx context.Context, req *pb.DeleteRolesForUserRequest) (*emptypb.Empty, error) {
+	is_ok, err := s.uc.DeleteRolesForUser(ctx, &biz.Auth{
+		DeleteRolesForUser: req,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !is_ok {
+		return nil, errors.ErrorResourceDeleteError("resource delete error")
+	}
+
+	return nil, nil
 }

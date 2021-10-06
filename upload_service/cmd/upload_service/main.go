@@ -2,11 +2,6 @@ package main
 
 import (
 	"flag"
-	uploadq_qiniu "github.com/raylin666/go-utils/upload/qiniu"
-	"os"
-	"upload_service/repositorie/pool"
-	"upload_service/repositorie/upload/qiniu"
-
 	consul "github.com/go-kratos/consul/registry"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -15,7 +10,11 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/hashicorp/consul/api"
+	uploadq_qiniu "github.com/raylin666/go-utils/upload/qiniu"
+	"os"
 	"upload_service/internal/conf"
+	"upload_service/repositorie/pool"
+	"upload_service/repositorie/upload/qiniu"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"

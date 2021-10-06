@@ -1,7 +1,7 @@
 package main
 
 import (
-	"auth_service/internal/repositorie/casbin"
+	"auth_service/repositorie/casbin"
 	"flag"
 	"os"
 

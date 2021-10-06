@@ -34,3 +34,19 @@ func (r *AuthRepo) GetUsersForRole(ctx context.Context, g *biz.Auth) error {
 func (r *AuthRepo) HasRoleForUser(ctx context.Context, g *biz.Auth) error {
 	return nil
 }
+
+func (r *AuthRepo) DeleteRoleForUser(ctx context.Context, g *biz.Auth) error {
+	return nil
+}
+
+func (r *AuthRepo) DeleteRolesForUser(ctx context.Context, g *biz.Auth) error {
+	return nil
+}
+
+func (r *AuthRepo) DeleteUser(ctx context.Context, g *biz.Auth) error {
+	return nil
+}
+
+func (r *AuthRepo) DeleteRole(ctx context.Context, g *biz.Auth) error {
+	return nil
+}
