@@ -1,15 +1,13 @@
 package service
 
 import (
+	"auth_service/internal/biz"
 	repositorie_casbin "auth_service/repositorie/casbin"
 	"context"
 	"github.com/casbin/casbin/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/raylin666/go-micro-protoc/errors"
 	pb "github.com/raylin666/go-micro-protoc/services/auth/v1"
-	"google.golang.org/protobuf/types/known/emptypb"
-
-	"auth_service/internal/biz"
-	"github.com/go-kratos/kratos/v2/log"
 )
 
 // AuthService is a greeter service.
@@ -79,7 +77,7 @@ func (s *AuthService) HasRoleForUser(ctx context.Context, req *pb.HasRoleForUser
 }
 
 // DeleteRoleForUser 删除用户的角色
-func (s *AuthService) DeleteRoleForUser(ctx context.Context, req *pb.DeleteRoleForUserRequest) (*emptypb.Empty, error) {
+func (s *AuthService) DeleteRoleForUser(ctx context.Context, req *pb.DeleteRoleForUserRequest) (*pb.DeleteRoleForUserReply, error) {
 	is_ok, err := s.uc.DeleteRoleForUser(ctx, &biz.Auth{
 		DeleteRoleForUser: req,
 	})
@@ -96,7 +94,7 @@ func (s *AuthService) DeleteRoleForUser(ctx context.Context, req *pb.DeleteRoleF
 }
 
 // DeleteRolesForUser  删除用户的所有角色
-func (s *AuthService) DeleteRolesForUser(ctx context.Context, req *pb.DeleteRolesForUserRequest) (*emptypb.Empty, error) {
+func (s *AuthService) DeleteRolesForUser(ctx context.Context, req *pb.DeleteRolesForUserRequest) (*pb.DeleteRolesForUserReply, error) {
 	is_ok, err := s.uc.DeleteRolesForUser(ctx, &biz.Auth{
 		DeleteRolesForUser: req,
 	})
