@@ -1,0 +1,129 @@
+syntax = "proto3";
+package api.config;
+
+option go_package = "api/config;config";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  string environment = 1;
+  App app = 2;
+  Server server = 3;
+  Data data = 4;
+  Jwt jwt = 5;
+  Datetime datetime = 6;
+  Language language = 7;
+  Validator validator = 8;
+  Log log = 9;
+  Etcd etcd = 10;
+}
+
+message App {
+  string id = 1;
+  string name = 2;
+  string version = 3;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+    ServiceDiscovery service_discovery = 4;
+  }
+  HTTP http = 1;
+  GRPC grpc = 2;
+}
+
+message ServiceDiscovery {
+  string user = 1;
+}
+
+message Data {
+  message Database {
+    DatabaseItem default = 1;
+  }
+  message Redis {
+    RedisItem default = 1;
+  }
+  Database database = 1;
+  Redis redis = 2;
+}
+
+message DatabaseItem {
+  string dsn = 1;
+  string driver = 2;
+  string dbname = 3;
+  string host = 4;
+  string username = 5;
+  string password = 6;
+  string charset = 7;
+  int64  port = 8;
+  string prefix = 9;
+  int64  max_idle_conn = 10;
+  int64  max_open_conn = 11;
+  int64  max_life_time = 12;
+  string parse_time = 13;
+  string loc = 14;
+}
+
+message RedisItem {
+  string network = 1;
+  string addr = 2;
+  int64 port = 3;
+  string username = 4;
+  string password = 5;
+  int32 db = 6;
+  int32 max_retries = 7;
+  int64 min_retry_backoff = 8;
+  int64 max_retry_backoff = 9;
+  int64 dial_timeout = 10;
+  int64 read_timeout = 11;
+  int64 write_timeout = 12;
+  bool pool_fifo = 13;
+  int32 pool_size = 14;
+  int64 min_idle_conns = 15;
+  int64 max_conn_age = 16;
+  int64 pool_timeout = 17;
+  int64 idle_timeout = 18;
+  int64 idle_check_frequency = 19;
+}
+
+message Jwt {
+  string app = 1;
+  string key = 2;
+  string secret = 3;
+}
+
+message Datetime {
+  string location = 1;
+  string cst_layout = 2;
+}
+
+message Language {
+  string local = 1;
+}
+
+message Validator {
+  string locale = 1;
+  string tagname = 2;
+}
+
+message Log {
+  int32 max_size = 1;
+  int32 max_backups = 2;
+  int32 max_age = 3;
+  bool local_time = 4;
+  bool compress = 5;
+}
+
+message Etcd {
+  string namespace = 1;
+  repeated string endpoints = 2;
+  google.protobuf.Duration dial_timeout = 3;
+}

@@ -1,0 +1,31 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Heartbeat API
+    description: The Heartbeat service definition.
+    version: 0.0.1
+paths:
+    /heartbeat:
+        get:
+            tags:
+                - Heartbeat
+            description: Heartbeat detection
+            operationId: Heartbeat_PONE
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.PONEResponse'
+components:
+    schemas:
+        v1.PONEResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+tags:
+    - name: Heartbeat

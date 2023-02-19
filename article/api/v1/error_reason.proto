@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package v1;
+
+import "errors/errors.proto";
+
+option go_package = "api/v1;v1";
+
+enum ErrorReason {
+  // 设置缺省错误码
+  option (errors.default_code) = 500;
+
+  // 未知错误
+  UNKNOWN_ERROR = 0;
+
+  // 服务异常
+  SERVER_ERROR = 100001 [(errors.code) = 500];
+
+  // 数据校验失败
+  DATA_VALIDATE_ERROR = 201001 [(errors.code) = 422];
+  // 数据查询失败
+  DATA_SELECT_ERROR = 201002 [(errors.code) = 400];
+  // 数据已存在
+  DATA_ALREADY_EXISTS = 201003 [(errors.code) = 400];
+  // 数据不存在
+  DATA_NOT_FOUND = 201004 [(errors.code) = 400];
+  // 新增数据失败
+  DATA_ADD_ERROR = 201005 [(errors.code) = 400];
+  // 更新数据失败
+  DATA_UPDATE_ERROR = 201006 [(errors.code) = 400];
+  // 数据删除失败
+  DATA_DELETE_ERROR = 201007 [(errors.code) = 400];
+  // 数据资源不存在
+  DATA_RESOURCE_NOT_FOUND = 201008 [(errors.code) = 400];
+  // 数据属性更新失败
+  DATA_UPDATE_FIELD_ERROR = 201009 [(errors.code) = 400];
+
+  // 无效ID值
+  ID_INVALID_VALUE_ERROR = 202001 [(errors.code) = 400];
+  // 无效的执行指令
+  COMMAND_INVALID_NOT_FOUND = 202002 [(errors.code) = 400];
+
+  // 请先登录后再操作
+  NOT_LOGIN_ERROR = 203001 [(errors.code) = 401];
+  // 没有访问权限
+  NOT_VISIT_AUTH = 203002 [(errors.code) = 401];
+}

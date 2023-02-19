@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "api/v1;v1";
+
+// kratos proto client api/v1/heartbeat.proto
+
+// The Heartbeat service definition.
+service Heartbeat {
+  // Heartbeat detection
+  rpc PONE (google.protobuf.Empty) returns (PONEResponse) {
+    option (google.api.http) = {
+      get: "/heartbeat"
+    };
+  }
+}
+
+message PONEResponse {
+  string message = 1;
+}
