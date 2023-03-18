@@ -15,6 +15,7 @@ require (
 	google.golang.org/protobuf v1.28.1
 	gorm.io/gen v0.3.18
 	gorm.io/gorm v1.24.0
+	gorm.io/plugin/dbresolver v1.3.0
 )
 
 require (
@@ -47,9 +48,4 @@ require (
 	gorm.io/datatypes v1.0.7 // indirect
 	gorm.io/driver/mysql v1.4.0 // indirect
 	gorm.io/hints v1.1.0 // indirect
-	gorm.io/plugin/dbresolver v1.3.0 // indirect
-)
-
-replace (
-	// github.com/raylin666/go-micro-protoc => /Users/linshan/development/docker/www/golang/raylin666/go-pkg/go-micro-protoc
 )
