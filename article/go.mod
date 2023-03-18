@@ -6,7 +6,7 @@ require (
 	github.com/fatih/color v1.13.0
 	github.com/go-kratos/kratos/v2 v2.5.3
 	github.com/google/wire v0.5.0
-	github.com/raylin666/go-micro-protoc v1.2.7
+	github.com/raylin666/go-micro-protoc v1.2.8
 	github.com/raylin666/go-utils v1.4.4
 	go.uber.org/automaxprocs v1.5.1
 	go.uber.org/zap v1.21.0
