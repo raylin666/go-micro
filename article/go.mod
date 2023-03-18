@@ -51,5 +51,5 @@ require (
 )
 
 replace (
-	github.com/raylin666/go-micro-protoc => /Users/linshan/development/docker/www/golang/raylin666/go-pkg/go-micro-protoc
+	// github.com/raylin666/go-micro-protoc => /Users/linshan/development/docker/www/golang/raylin666/go-pkg/go-micro-protoc
 )

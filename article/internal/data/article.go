@@ -109,7 +109,7 @@ func (repo *articleRepo) Info(ctx context.Context, id int) (m *model.Article, em
 // GetPrevArticle 获取上一篇文章
 func (repo *articleRepo) GetPrevArticle(ctx context.Context, id int) *model.Article {
 	// 获取ID当前位置
-	var sql = fmt.Sprintf("SELECT * FROM (SELECT id, RANK() OVER (ORDER BY recommend_flag DESC, sort DESC, id DESC) AS pos FROM api_article WHERE `status` = %d GROUP BY id ORDER BY recommend_flag DESC, sort DESC, id DESC) ranked WHERE id = %d;", model.ENUM_ARTICLE_STATUS_OPEN, id)
+	var sql = fmt.Sprintf("SELECT * FROM (SELECT id, RANK() OVER (ORDER BY recommend_flag DESC, sort DESC, id DESC) AS pos FROM api_article WHERE `status` = %d ORDER BY recommend_flag DESC, sort DESC, id DESC) ranked WHERE id = %d;", model.ENUM_ARTICLE_STATUS_OPEN, id)
 	posResult, err := dbrepo.NewDefaultDb(repo.data.DbRepo).WithContext(ctx).Raw(sql).Rows()
 	if err != nil {
 		return nil
@@ -135,7 +135,7 @@ func (repo *articleRepo) GetPrevArticle(ctx context.Context, id int) *model.Arti
 // GetNextArticle 获取下一篇文章
 func (repo *articleRepo) GetNextArticle(ctx context.Context, id int) *model.Article {
 	// 获取ID当前位置
-	var sql = fmt.Sprintf("SELECT * FROM (SELECT id, RANK() OVER (ORDER BY recommend_flag DESC, sort DESC, id DESC) AS pos FROM api_article WHERE `status` = %d GROUP BY id ORDER BY recommend_flag DESC, sort DESC, id DESC) ranked WHERE id = %d;", model.ENUM_ARTICLE_STATUS_OPEN, id)
+	var sql = fmt.Sprintf("SELECT * FROM (SELECT id, RANK() OVER (ORDER BY recommend_flag DESC, sort DESC, id DESC) AS pos FROM api_article WHERE `status` = %d ORDER BY recommend_flag DESC, sort DESC, id DESC) ranked WHERE id = %d;", model.ENUM_ARTICLE_STATUS_OPEN, id)
 	posResult, err := dbrepo.NewDefaultDb(repo.data.DbRepo).WithContext(ctx).Raw(sql).Rows()
 	if err != nil {
 		return nil
